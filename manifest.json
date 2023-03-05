@@ -3,6 +3,7 @@
   "name": "Copy Helper",
   "description": "A copy helper extension",
   "version": "1.0",
+  "permissions": ["activeTab"],
   "action": {
     "default_popup": "./src/index.html",
     "default_icon": "./assets/copy.png"

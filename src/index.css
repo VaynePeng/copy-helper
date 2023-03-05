@@ -1,0 +1,32 @@
+.copy-helper {
+  width: 200px;
+  text-align: center;
+}
+
+.main {
+}
+
+input:focus {
+  outline: none;
+}
+
+.copy-input {
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 5px;
+  border: 2px solid #ccc;
+}
+
+.copy-button {
+  width: 184px;
+  border: none;
+  height: 28px;
+  border-radius: 5px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.copy-button:active {
+  color: #999;
+  background-color: #eee;
+}
