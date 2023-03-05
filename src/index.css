@@ -1,9 +1,7 @@
 .copy-helper {
+  position: relative;
   width: 200px;
   text-align: center;
-}
-
-.main {
 }
 
 input:focus {
@@ -29,4 +27,25 @@ input:focus {
 .copy-button:active {
   color: #999;
   background-color: #eee;
+}
+
+.toast_box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+
+.toast_box p {
+  box-sizing: border-box;
+  padding: 10px 20px;
+  width: max-content;
+  background: #707070;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 6px;
+  opacity: 0.8;
 }
