@@ -8,6 +8,25 @@ const getTargetElement = (element) => {
   return target
 }
 
+const getTab = (element) => {
+  chrome.tabs.getSelected(null, function (tab) {
+    chrome.tabs.sendMessage(
+      tab.id,
+      { action: 'getTabElement', element },
+      (response) => {
+        alert(response.element)
+      }
+    )
+  })
+}
+
+chrome.extension.onMessage.addListener((request, sender, sendResponse) => {
+  const { action, element } = request
+  if (action == 'getTabElement') {
+    sendResponse({ element: getTargetElement(element) })
+  }
+})
+
 const toast = (text, time) => {
   let toast = getTargetElement('#toast')
   let toast_box = getTargetElement('.toast_box')
@@ -29,20 +48,17 @@ const getInputValue = () => {
 const copy = (element) => {
   const range = document.createRange()
   range.selectNode(element)
-  window.getSelection()?.removeAllRanges()
-  window.getSelection()?.addRange(range)
+  window.getSelection().removeAllRanges()
+  window.getSelection().addRange(range)
   document.execCommand('copy')
-  window.getSelection()?.removeAllRanges()
+  window.getSelection().removeAllRanges()
   toast('Copied!', 1000)
 }
 
 const copyHandler = () => {
-  const elementName = getInputValue()
-  if (!elementName) {
-    toast('Please enter a value', 1000)
-    return
-  }
+  const elementName = getInputValue() || 'html'
   const target = getTargetElement(elementName)
+  getTab(elementName)
   if (!target) {
     toast('Element not found', 1000)
     return
