@@ -8,24 +8,19 @@ const getTargetElement = (element) => {
   return target
 }
 
-const getTab = (element) => {
-  chrome.tabs.getSelected(null, function (tab) {
-    chrome.tabs.sendMessage(
-      tab.id,
-      { action: 'getTabElement', element },
-      (response) => {
-        alert(response.element)
-      }
-    )
-  })
+const getCurrentTab = async () => {
+  let queryOptions = { active: true, currentWindow: true }
+  let [tab] = await chrome.tabs.query(queryOptions)
+  return tab
 }
 
-chrome.extension.onMessage.addListener((request, sender, sendResponse) => {
-  const { action, element } = request
-  if (action == 'getTabElement') {
-    sendResponse({ element: getTargetElement(element) })
-  }
-})
+const getElement = async (element) => {
+  const tab = await getCurrentTab()
+  chrome.tabs.sendMessage(tab.id, { element }, (response) => {
+    alert(response)
+    return response
+  })
+}
 
 const toast = (text, time) => {
   let toast = getTargetElement('#toast')
@@ -46,19 +41,18 @@ const getInputValue = () => {
 }
 
 const copy = (element) => {
-  const range = document.createRange()
-  range.selectNode(element)
-  window.getSelection().removeAllRanges()
-  window.getSelection().addRange(range)
-  document.execCommand('copy')
-  window.getSelection().removeAllRanges()
+  // const range = document.createRange()
+  // range.selectNode(element)
+  // window.getSelection().removeAllRanges()
+  // window.getSelection().addRange(range)
+  // document.execCommand('copy')
+  // window.getSelection().removeAllRanges()
   toast('Copied!', 1000)
 }
 
 const copyHandler = () => {
   const elementName = getInputValue() || 'html'
-  const target = getTargetElement(elementName)
-  getTab(elementName)
+  const target = getElement(elementName)
   if (!target) {
     toast('Element not found', 1000)
     return

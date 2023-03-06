@@ -3,12 +3,19 @@
   "name": "Copy Helper",
   "description": "A copy helper extension",
   "version": "1.0",
-  "matches": [
-    "http://*/*",
-    "https://*/*"
-  ],
   "permissions": [
-    "tabs"
+    "tabs",
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "src/content-script.js"
+      ]
+    }
   ],
   "action": {
     "default_popup": "./src/index.html",
