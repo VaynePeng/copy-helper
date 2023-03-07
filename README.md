@@ -1,3 +1,7 @@
-### Copy Helper
+## Copy Helper
 
-- [ ] [content script](https://developer.chrome.com/docs/extensions/mv3/content_scripts/)
+复制页面的某个DOM节点的内容
+
+### TODO
+- [ ] 对于找到节点但是无法复制的尝试复制 DOM 节点并格式化
+- [ ] 复制前覆盖部分 CSS 样式
