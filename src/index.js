@@ -36,10 +36,14 @@ const copy = (name) => {
   try {
     const element = document.querySelector(name || 'html')
     if (!element) return 'Element not found'
+    // reset user-select
+    element.style.cssText += 'user-select: auto;'
     const range = document.createRange()
     range.selectNode(element)
     window.getSelection().removeAllRanges()
     window.getSelection().addRange(range)
+    const text = window.getSelection().toString()
+    if (!text) return 'No text to copy'
     document.execCommand('copy')
     window.getSelection().removeAllRanges()
     return 'Copied!'
