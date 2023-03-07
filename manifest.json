@@ -4,18 +4,8 @@
   "description": "A copy helper extension",
   "version": "1.0",
   "permissions": [
-    "tabs",
-    "activeTab"
-  ],
-  "content_scripts": [
-    {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "src/content-script.js"
-      ]
-    }
+    "activeTab",
+    "scripting"
   ],
   "action": {
     "default_popup": "./src/index.html",

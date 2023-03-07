@@ -14,14 +14,6 @@ const getCurrentTab = async () => {
   return tab
 }
 
-const getElement = async (element) => {
-  const tab = await getCurrentTab()
-  chrome.tabs.sendMessage(tab.id, { element }, (response) => {
-    alert(response)
-    return response
-  })
-}
-
 const toast = (text, time) => {
   let toast = getTargetElement('#toast')
   let toast_box = getTargetElement('.toast_box')
@@ -40,24 +32,35 @@ const getInputValue = () => {
   return input.value
 }
 
-const copy = (element) => {
-  // const range = document.createRange()
-  // range.selectNode(element)
-  // window.getSelection().removeAllRanges()
-  // window.getSelection().addRange(range)
-  // document.execCommand('copy')
-  // window.getSelection().removeAllRanges()
-  toast('Copied!', 1000)
+const copy = (name) => {
+  try {
+    const element = document.querySelector(name || 'html')
+    if (!element) return 'Element not found'
+    const range = document.createRange()
+    range.selectNode(element)
+    window.getSelection().removeAllRanges()
+    window.getSelection().addRange(range)
+    document.execCommand('copy')
+    window.getSelection().removeAllRanges()
+    return 'Copied!'
+  } catch (error) {
+    return error.message
+  }
 }
 
-const copyHandler = () => {
-  const elementName = getInputValue() || 'html'
-  const target = getElement(elementName)
-  if (!target) {
-    toast('Element not found', 1000)
-    return
-  }
-  copy(target)
+const copyHandler = async () => {
+  const name = getInputValue() || 'html'
+  const tab = await getCurrentTab()
+  chrome.scripting
+    .executeScript({
+      target: { tabId: tab.id },
+      function: copy,
+      args: [name]
+    })
+    .then((response) => {
+      const message = response[0].result
+      toast(message, 1000)
+    })
 }
 
 copyButton.addEventListener('click', copyHandler)
